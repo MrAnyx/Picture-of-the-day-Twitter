@@ -1,0 +1,14 @@
+{
+  "name": "bot_twitter",
+  "version": "1.0.0",
+  "description": "a twitter bot that post pictures from the nasa API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Robin Bidanchon",
+  "license": "MIT",
+  "dependencies": {
+    "twitter": "^1.7.1"
+  }
+}
