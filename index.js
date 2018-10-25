@@ -11,6 +11,10 @@ var client = new Twitter({
   access_token_secret: tokens.access_token_secret
 });
 
+
+
+
+
 var download = function(uri, filename, callback){
   request.head(uri, function(err, res, body){
     request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
@@ -26,9 +30,9 @@ function tweet_apod(){
       });
       resp.on('end', () => {
         let apod = JSON.parse(data)
-        download(apod.hdurl, './images/image_apod.jpg', function(){
+        download(apod.hdurl, 'image_apod.jpg', function(){
           console.log(`L'image du ${apod.date} a été téléchargée avec succès`);
-          var image = fs.readFileSync("./images/image_apod.jpg");
+          var image = fs.readFileSync("image_apod.jpg");
           client.post('media/upload', {media: image}, function(error, media, response) {
             if (!error) {
               var status = {
