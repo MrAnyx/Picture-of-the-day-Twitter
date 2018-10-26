@@ -11,10 +11,6 @@ var client = new Twitter({
   access_token_secret: tokens.access_token_secret
 });
 
-
-
-
-
 var download = function(uri, filename, callback){
   request.head(uri, function(err, res, body){
     request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
@@ -22,35 +18,33 @@ var download = function(uri, filename, callback){
 };
 
 function tweet_apod(){
-  try{
-    https.get("https://api.nasa.gov/planetary/apod?api_key="+tokens.nasa_api, (resp) =>{
-      let data = '';
-      resp.on('data', (chunk) => {
-        data += chunk;
-      });
-      resp.on('end', () => {
-        let apod = JSON.parse(data)
-        download(apod.hdurl, 'image_apod.jpg', function(){
-          console.log(`L'image du ${apod.date} a été téléchargée avec succès`);
-          var image = fs.readFileSync("image_apod.jpg");
-          client.post('media/upload', {media: image}, function(error, media, response) {
-            if (!error) {
-              var status = {
-                status: `The picture of the day (${apod.date}) : "${apod.title}" taken by ${apod.copyright}.\n\nFor more information, check out the @NASA website : https://apod.nasa.gov/apod/archivepix.html`,
-                media_ids: media.media_id_string // Pass the media id string
-              }
-              client.post('statuses/update', status, function(){
-                console.log(`L'image du ${apod.date} a été tweeté avec succès`);
-              });
+
+  https.get("https://api.nasa.gov/planetary/apod?api_key="+tokens.nasa_api, (resp) =>{
+    let data = '';
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+    resp.on('end', () => {
+      let apod = JSON.parse(data)
+      download(apod.url, 'image_apod.jpg', function(){
+        console.log(`L'image du ${apod.date} a été téléchargée avec succès`);
+        var image = fs.readFileSync("image_apod.jpg");
+        client.post('media/upload', {media: image}, function(error, media, response) {
+          if (!error) {
+            var status = {
+              status: `The picture of the day (${apod.date}) : "${apod.title}" taken by ${apod.copyright}.\n\n#space #nasa #esa #apod #astrophoto\n\nFor more information, check out the @NASA website : https://apod.nasa.gov/apod/archivepix.html`,
+              media_ids: media.media_id_string // Pass the media id string
             }
-          });
-        })
-      });
-    })
-  }catch(e){
-    console.log(`Une erreur est survenue\n${e.message}`);
-  }
+            client.post('statuses/update', status, function(){
+              console.log(`L'image du ${apod.date} a été tweeté avec succès`);
+            });
+          }
+        });
+      })
+    });
+  })
+
 }
 
 tweet_apod()
-setInterval(tweet_apod, 1000*60*60*24)
+// setInterval(tweet_apod, 1000*60*60*24)
