@@ -18,7 +18,7 @@ var download = function(uri, filename, callback){
 };
 
 function tweet_apod(){
-
+  try{
   https.get("https://api.nasa.gov/planetary/apod?api_key="+tokens.nasa_api, (resp) =>{
     let data = '';
     resp.on('data', (chunk) => {
@@ -43,8 +43,11 @@ function tweet_apod(){
       })
     });
   })
+} catch(e){
+  console.log(e);
+}
 
 }
 
 tweet_apod()
-// setInterval(tweet_apod, 1000*60*60*24)
+setInterval(tweet_apod, 1000*60*60*24)
