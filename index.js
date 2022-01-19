@@ -1,4 +1,3 @@
-const tokens = require('./tokens.json')
 const https = require('https')
 const fs = require('fs')
 const request = require('request');
@@ -19,7 +18,7 @@ var download = function(uri, filename, callback){
 
 
 try{
-  https.get("https://api.nasa.gov/planetary/apod?api_key="+tokens.nasa_api, (resp) =>{
+  https.get("https://api.nasa.gov/planetary/apod?api_key="+process.env.NASA_API, (resp) =>{
     let data = '';
     resp.on('data', (chunk) => {
       data += chunk;
