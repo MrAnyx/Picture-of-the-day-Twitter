@@ -1,5 +1,6 @@
 name: Publish todays photo
 
+
 # Controls when the workflow will run
 on:
    schedule:
