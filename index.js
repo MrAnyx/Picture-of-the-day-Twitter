@@ -31,7 +31,7 @@ try{
         client.post('media/upload', {media: image}, function(error, media, response) {
           if (!error) {
             var status = {
-              status: `The picture of the day (${apod.date}) : "${apod.title}" taken by ${apod.copyright}.\n\n#space #nasa #esa #apod #astrophoto\n\nFor more information, check out the @NASA website : https://apod.nasa.gov/apod/archivepix.html`,
+              status: `The picture of the day (${apod.date}) : "${apod.title}"${apod.copyright !== undefined ? ` taken by ${apod.copyright}` : ''}.\n\n#space #nasa #esa #apod #astrophoto\n\nFor more information, check out the @NASA website : https://apod.nasa.gov/apod/archivepix.html`,
               media_ids: media.media_id_string // Pass the media id string
             }
             client.post('statuses/update', status, function(){
