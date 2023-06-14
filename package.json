@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js"
   },
-  "author": "Robin Bidanchon",
+  "author": "MrAnyx",
   "license": "MIT",
   "dependencies": {
     "twit": "^2.2.11",
